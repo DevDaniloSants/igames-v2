@@ -1,7 +1,11 @@
-import { Button } from "./_components/ui/button";
+import { SidebarTrigger } from "./_components/ui/sidebar";
 
 const Home = () => {
-  return <Button>Teste do shadcn</Button>;
+  return (
+    <SidebarTrigger className="w-full bg-yellow-300">
+      testeeeeeeeeeeeeeeeeeeeeeeee
+    </SidebarTrigger>
+  );
 };
 
 export default Home;
