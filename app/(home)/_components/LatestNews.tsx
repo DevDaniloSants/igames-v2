@@ -29,7 +29,7 @@ const LatestNews = ({ posts }: LatestNewsProps) => {
   if (isMobile) {
     return (
       <Carousel className="h-[300px] w-full" plugins={[plugin.current]}>
-        <CarouselContent className="">
+        <CarouselContent>
           {posts.map((post, index) => (
             <CarouselItem
               key={index}
@@ -59,7 +59,7 @@ const LatestNews = ({ posts }: LatestNewsProps) => {
   }
 
   return (
-    <div className="grid h-[450px] grid-cols-1 gap-2 lg:grid-cols-2">
+    <div className="grid min-h-[600px] grid-rows-3 gap-2 overflow-hidden lg:grid-cols-2 lg:grid-rows-none">
       <div className="group relative cursor-pointer overflow-hidden lg:rounded-l-lg">
         <Image
           src={posts[0].imageUrl}
