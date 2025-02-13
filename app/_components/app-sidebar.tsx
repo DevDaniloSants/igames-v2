@@ -26,15 +26,15 @@ const AppSidebar = () => {
 
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader
-        className={`${open || isMobile ? "flex items-center justify-center" : ""} relative p-2 pt-4`}
-      >
+      <SidebarHeader className="relative p-2 pt-4">
         <Image
           src={"/logo.png"}
           alt="Logo"
           width={100}
           height={100}
-          className="max-h-[32px] max-w-[32px] object-cover"
+          className={`max-h-[32px] max-w-[32px] transform object-cover transition-all duration-300 ${
+            open || isMobile ? "translate-x-28" : "-translate-x-0"
+          }`}
         />
 
         {!isMobile && (
@@ -47,7 +47,7 @@ const AppSidebar = () => {
         <SidebarGroup>
           <SidebarGroupLabel>Menu</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="space-y-2">
               {SIDEBAR_ITEMS.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
