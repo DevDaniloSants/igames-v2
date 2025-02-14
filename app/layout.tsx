@@ -25,7 +25,7 @@ export default function RootLayout({
       <body className={`${mulish.className} dark antialiased`}>
         <SidebarProvider>
           <Header />
-          <main className="h-dvh w-dvw flex-1 p-5 xl:flex xl:justify-center">
+          <main className="flex h-dvh w-dvw justify-center overflow-hidden p-5">
             {children}
           </main>
         </SidebarProvider>
