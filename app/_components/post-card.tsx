@@ -11,7 +11,7 @@ interface PostCardProps {
 const PostCard = ({ post }: PostCardProps) => {
   return (
     <div className="group flex w-full cursor-pointer flex-col gap-2 md:flex-row">
-      <div className="relative flex h-36 w-full overflow-hidden rounded-lg md:h-[135px] md:w-[200px]">
+      <div className="relative flex h-36 w-full overflow-hidden rounded-lg md:max-h-[135px] md:min-h-[135px] md:min-w-[200px] md:max-w-[200px]">
         <Image
           src={post.imageUrl}
           alt={post.title}
@@ -20,7 +20,7 @@ const PostCard = ({ post }: PostCardProps) => {
         />
       </div>
       <div className="flex flex-col">
-        <h1 className="w-[90%] truncate text-lg font-bold group-hover:text-secondary-foreground">
+        <h1 className="w-11/12 truncate text-lg font-bold group-hover:text-secondary-foreground">
           {post.title}
         </h1>
         <div className="flex gap-2">
@@ -35,7 +35,9 @@ const PostCard = ({ post }: PostCardProps) => {
             <span className="text-xs">0 comentários</span>
           </div>
         </div>
-        <p className="w-[90%] truncate pt-4">{post.content}</p>
+        <p className="w-11/12 truncate pt-4 text-muted-foreground md:flex md:w-full md:flex-wrap md:overflow-visible md:whitespace-normal">
+          {post.content}
+        </p>
       </div>
     </div>
   );
