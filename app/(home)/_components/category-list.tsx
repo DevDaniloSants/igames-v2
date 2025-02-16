@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Carousel,
   CarouselContent,
@@ -6,15 +8,16 @@ import {
 
 import CategoryItem from "./category-item";
 import { Category } from "@prisma/client";
+import { useIsMobile } from "@/app/_hooks/use-mobile";
 
 interface CategoryListProps {
   categories: Category[];
 }
 
 const CategoryList = ({ categories }: CategoryListProps) => {
-  if (!categories) return null;
+  const isMobile = useIsMobile();
 
-  return (
+  return isMobile ? (
     <Carousel className="max-w-1200px w-full">
       <CarouselContent>
         {categories.map((category) => (
@@ -27,7 +30,12 @@ const CategoryList = ({ categories }: CategoryListProps) => {
         ))}
       </CarouselContent>
     </Carousel>
+  ) : (
+    <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      {categories.map((category) => (
+        <CategoryItem key={category.id} category={category} />
+      ))}
+    </div>
   );
 };
-
 export default CategoryList;
