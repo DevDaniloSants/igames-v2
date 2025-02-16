@@ -33,9 +33,12 @@ const Home = async () => {
           </h2>
           <PostList posts={postsSkipLatest} />
         </div>
-        <div className="w-full space-y-4">
+        <div className="w-full space-y-6">
           <div className="space-y-2">
-            <h3 className="text-lg font-semibold">Redes Sociais</h3>
+            <h3 className="text-2xl font-bold lg:text-lg lg:font-semibold">
+              Redes Sociais
+            </h3>
+            <hr />
             <div className="flex flex-wrap gap-2">
               <Button className="dark:shadow-lgdark:focus:ring-pink-800 rounded-lg bg-gradient-to-r from-pink-500 via-pink-600 to-pink-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-br focus:outline-none focus:ring-4 focus:ring-pink-300">
                 <BsInstagram />
@@ -57,6 +60,24 @@ const Home = async () => {
                 <BsTwitterX />
                 Twitter
               </Button>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <h3 className="text-2xl font-bold lg:text-lg lg:font-semibold">
+              Notícias Recentes
+            </h3>
+            <hr />
+            <div className="space-y-4">
+              {latestNewsPosts.map((post) => (
+                <div key={post.id} className="group cursor-pointer rounded-md">
+                  <h4 className="w-10/12 truncate text-xl font-bold text-secondary-foreground transition-all duration-300 group-hover:text-primary lg:text-sm">
+                    {post.title}
+                  </h4>
+                  <p className="w-full truncate text-base text-muted-foreground lg:text-xs">
+                    {post.content}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
