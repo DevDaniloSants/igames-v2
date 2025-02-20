@@ -6,6 +6,8 @@ import {
 import { Badge } from "@/app/_components/ui/badge";
 import getPost from "@/app/_data-access/post/get-post";
 import getPostComments from "@/app/_data-access/post/get-post-comments";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 import Image from "next/image";
 
 import { notFound } from "next/navigation";
@@ -23,7 +25,7 @@ const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
     <div className="mt-6 flex w-full flex-col xl:w-[1200px]">
       <div className="flex items-center gap-2">
         <span className="text-sm font-medium text-muted-foreground">
-          10/02/2025
+          {format(post.createdAt, "dd.mm.yyyy", { locale: ptBR })}
         </span>
         <Badge className="rounded-sm px-1 py-0">{post.category.name}</Badge>
       </div>
