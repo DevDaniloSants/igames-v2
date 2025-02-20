@@ -7,7 +7,7 @@ interface PostListProps {
 
 const PostList = ({ posts }: PostListProps) => {
   return (
-    <div className="h-full w-full space-y-4">
+    <div className="flex h-full w-full flex-col gap-4">
       {posts.map((post) => (
         <PostCard key={post.id} post={post} />
       ))}

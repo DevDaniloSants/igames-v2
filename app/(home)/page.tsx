@@ -12,6 +12,7 @@ import { getLatestNews } from "../_data-access/post/get-latest-news";
 import { GetPostsSkipLatest } from "../_data-access/post/get-posts-skip-latest";
 import CategoryList from "./_components/category-list";
 import LatestNews from "./_components/LatestNews";
+import Link from "next/link";
 
 const Home = async () => {
   const latestNewsPosts = await getLatestNews();
@@ -67,16 +68,21 @@ const Home = async () => {
               Notícias Recentes
             </h3>
             <hr />
-            <div className="space-y-4">
+            <div className="flex w-full flex-col gap-2">
               {latestNewsPosts.map((post) => (
-                <div key={post.id} className="group cursor-pointer rounded-md">
-                  <h4 className="w-10/12 truncate text-xl font-bold text-secondary-foreground transition-all duration-300 group-hover:text-primary lg:text-sm">
-                    {post.title}
-                  </h4>
-                  <p className="w-full truncate text-base text-muted-foreground lg:text-xs">
-                    {post.content}
-                  </p>
-                </div>
+                <Link href={`/posts/${post.id}`} key={post.id}>
+                  <div
+                    key={post.id}
+                    className="group cursor-pointer rounded-md"
+                  >
+                    <h4 className="w-10/12 truncate text-xl font-bold text-secondary-foreground transition-all duration-300 group-hover:text-primary lg:text-sm">
+                      {post.title}
+                    </h4>
+                    <p className="w-11/12 truncate text-sm text-muted-foreground lg:text-xs">
+                      {post.content}
+                    </p>
+                  </div>
+                </Link>
               ))}
             </div>
           </div>
