@@ -3,11 +3,12 @@ import PostCard from "./post-card";
 
 interface PostListProps {
   posts: Post[];
+  className?: string;
 }
 
-const PostList = ({ posts }: PostListProps) => {
+const PostList = ({ posts, className }: PostListProps) => {
   return (
-    <div className="flex h-full w-full flex-col gap-4">
+    <div className={`${className} `}>
       {posts.map((post) => (
         <PostCard key={post.id} post={post} />
       ))}

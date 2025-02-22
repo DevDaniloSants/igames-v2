@@ -32,7 +32,11 @@ const Home = async () => {
           <h2 className="relative text-2xl font-bold before:absolute before:left-28 before:top-4 before:h-1 before:w-full before:bg-secondary before:lg:w-4/5">
             Notícias
           </h2>
-          <PostList posts={postsSkipLatest} />
+
+          <PostList
+            posts={postsSkipLatest}
+            className="flex h-full w-full flex-col gap-4"
+          />
         </div>
         <div className="w-full space-y-6">
           <div className="space-y-2">
