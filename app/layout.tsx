@@ -5,6 +5,7 @@ import "./globals.css";
 import { SidebarProvider } from "./_components/ui/sidebar";
 
 import Header from "./_components/header";
+import { SessionProvider } from "next-auth/react";
 
 const mulish = Mulish({
   subsets: ["latin-ext"],
@@ -23,12 +24,14 @@ export default function RootLayout({
   return (
     <html lang="pt-Br">
       <body className={`${mulish.className} dark antialiased`}>
-        <SidebarProvider>
-          <Header />
-          <main className="flex h-full w-dvw justify-center p-2 md:p-5">
-            {children}
-          </main>
-        </SidebarProvider>
+        <SessionProvider>
+          <SidebarProvider>
+            <Header />
+            <main className="flex h-full w-dvw justify-center p-2 md:p-5">
+              {children}
+            </main>
+          </SidebarProvider>
+        </SessionProvider>
       </body>
     </html>
   );
