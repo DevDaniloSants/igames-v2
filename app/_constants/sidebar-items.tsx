@@ -12,25 +12,25 @@ export const SIDEBAR_ITEMS = [
   {
     id: 2,
     title: "Playstation",
-    href: "/",
+    href: "/posts?category=Playstation",
     icon: FaPlaystation,
   },
   {
     id: 3,
     title: "Xbox",
-    href: "/",
+    href: "/posts?category=Xbox",
     icon: FaXbox,
   },
   {
     id: 4,
-    title: "Nintendo",
-    href: "/",
+    title: "Nintendo Switch",
+    href: "/posts?category=Nintendo",
     icon: BsNintendoSwitch,
   },
   {
     id: 5,
     title: "PC",
-    href: "/",
+    href: "/posts?category=PC",
     icon: MdDesktopMac,
   },
 ];

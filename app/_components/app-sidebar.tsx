@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronLeft, ChevronRight, UserIcon } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { useIsMobile } from "../_hooks/use-mobile";
 import {
@@ -19,19 +19,13 @@ import {
 } from "./ui/sidebar";
 import Image from "next/image";
 import { SIDEBAR_ITEMS } from "../_constants/sidebar-items";
-import { Button } from "./ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "./ui/dialog";
-import { BsGoogle } from "react-icons/bs";
+
 import { signIn, signOut } from "next-auth/react";
 
 import { useSession } from "next-auth/react";
+
+import LoginDialog from "./login-dialog";
+import UserDropDownMenu from "./user-drop-down-menu";
 
 const AppSidebar = () => {
   const isMobile = useIsMobile();
@@ -73,7 +67,7 @@ const AppSidebar = () => {
               {SIDEBAR_ITEMS.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.href}>
+                    <a href={item.href} className="space-x-3">
                       <item.icon />
                       <span>{item.title}</span>
                     </a>
@@ -84,45 +78,16 @@ const AppSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
-        <hr />
-        <p>{session?.user?.name}</p>
-        <p>{session?.user.role}</p>
-        <p>teste</p>
+      <SidebarFooter className="px-1">
         {session?.user ? (
-          <Button
-            className={`${open || isMobile ? "w-full rounded-md p-2" : "h-7 w-7 rounded-full p-0"} transition-[width] duration-200`}
-            onClick={handleSignOutClick}
-          >
-            SignOut
-          </Button>
+          <UserDropDownMenu
+            handleSignOutClick={handleSignOutClick}
+            session={session}
+            isMobile={isMobile}
+            open={open}
+          />
         ) : (
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button
-                className={`${open || isMobile ? "w-full rounded-md p-2" : "h-7 w-7 rounded-full p-0"} transition-[width] duration-200`}
-              >
-                <UserIcon />
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="w-[95%] md:w-full">
-              <DialogHeader className="flex items-center">
-                <DialogTitle>Faça login na plataforma</DialogTitle>
-                <DialogDescription>
-                  Conecte-se usando sua conta do Google
-                </DialogDescription>
-              </DialogHeader>
-              <div>
-                <Button
-                  className="w-full font-bold"
-                  onClick={handleSignInClick}
-                >
-                  <BsGoogle />
-                  Google
-                </Button>
-              </div>
-            </DialogContent>
-          </Dialog>
+          <LoginDialog handleSignInClick={handleSignInClick} open={open} />
         )}
       </SidebarFooter>
     </Sidebar>
