@@ -87,7 +87,8 @@ const AppSidebar = () => {
       <SidebarFooter>
         <hr />
         <p>{session?.user?.name}</p>
-
+        <p>{session?.user.role}</p>
+        <p>teste</p>
         {session?.user ? (
           <Button
             className={`${open || isMobile ? "w-full rounded-md p-2" : "h-7 w-7 rounded-full p-0"} transition-[width] duration-200`}

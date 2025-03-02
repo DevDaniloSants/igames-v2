@@ -5,20 +5,32 @@ import { db } from "./app/_lib/prisma";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(db),
-  providers: [Google],
+  providers: [
+    Google({
+      profile(profile) {
+        return {
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture,
+          role: "USER",
+        };
+      },
+    }),
+  ],
   session: {
     strategy: "jwt",
   },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
+        token.role = user.role ?? "USER";
       }
       return token;
     },
     async session({ session, token }) {
-      if (token) {
-        session.user.id = token.id as string;
+      if (session?.user) {
+        session.user.role = token.role;
       }
       return session;
     },
