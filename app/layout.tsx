@@ -5,7 +5,7 @@ import "./globals.css";
 import { SidebarProvider } from "./_components/ui/sidebar";
 
 import Header from "./_components/header";
-import { SessionProvider } from "next-auth/react";
+import SessionProvider from "./_providers/session";
 
 const mulish = Mulish({
   subsets: ["latin-ext"],

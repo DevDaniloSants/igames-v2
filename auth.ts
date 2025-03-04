@@ -27,6 +27,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         token.role = user.role ?? Role.USER;
         token.email = user.email;
+        token.id = user.id;
       }
       return token;
     },

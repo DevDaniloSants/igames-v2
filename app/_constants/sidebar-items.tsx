@@ -1,6 +1,28 @@
+import { ListIcon, NewspaperIcon, UsersIcon } from "lucide-react";
 import { BsNintendoSwitch } from "react-icons/bs";
 import { FaPlaystation, FaXbox } from "react-icons/fa";
 import { MdHome, MdDesktopMac } from "react-icons/md";
+
+export const SIDEBAR_ADMIN_ITEMS = [
+  {
+    id: 6,
+    title: "Notícias",
+    href: "/",
+    icon: NewspaperIcon,
+  },
+  {
+    id: 7,
+    title: "Usuários",
+    href: "/",
+    icon: UsersIcon,
+  },
+  {
+    id: 8,
+    title: "Categorias",
+    href: "/",
+    icon: ListIcon,
+  },
+];
 
 export const SIDEBAR_ITEMS = [
   {

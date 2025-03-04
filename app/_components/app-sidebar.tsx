@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 
 import { useIsMobile } from "../_hooks/use-mobile";
 import {
@@ -18,7 +18,10 @@ import {
   useSidebar,
 } from "./ui/sidebar";
 import Image from "next/image";
-import { SIDEBAR_ITEMS } from "../_constants/sidebar-items";
+import {
+  SIDEBAR_ADMIN_ITEMS,
+  SIDEBAR_ITEMS,
+} from "../_constants/sidebar-items";
 
 import { signIn, signOut } from "next-auth/react";
 
@@ -26,19 +29,20 @@ import { useSession } from "next-auth/react";
 
 import LoginDialog from "./login-dialog";
 import UserDropDownMenu from "./user-drop-down-menu";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "./ui/collapsible";
 
 const AppSidebar = () => {
   const isMobile = useIsMobile();
   const { open } = useSidebar();
   const { data: session } = useSession();
 
-  const handleSignInClick = async () => {
-    await signIn("google");
-  };
+  const handleSignInClick = () => signIn("google");
 
-  const handleSignOutClick = async () => {
-    await signOut();
-  };
+  const handleSignOutClick = () => signOut();
 
   return (
     <Sidebar collapsible="icon">
@@ -60,6 +64,34 @@ const AppSidebar = () => {
         )}
       </SidebarHeader>
       <SidebarContent>
+        {session?.user.role === "ADMIN" && (
+          <Collapsible defaultOpen className="group/collapsible">
+            <SidebarGroup>
+              <SidebarGroupLabel asChild>
+                <CollapsibleTrigger>
+                  Admin
+                  <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                </CollapsibleTrigger>
+              </SidebarGroupLabel>
+              <CollapsibleContent>
+                <SidebarGroupContent>
+                  <SidebarMenu className="space-y-2">
+                    {SIDEBAR_ADMIN_ITEMS.map((item) => (
+                      <SidebarMenuItem key={item.title}>
+                        <SidebarMenuButton asChild>
+                          <a href={item.href} className="space-x-3">
+                            <item.icon />
+                            <span>{item.title}</span>
+                          </a>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </CollapsibleContent>
+            </SidebarGroup>
+          </Collapsible>
+        )}
         <SidebarGroup>
           <SidebarGroupLabel>Menu</SidebarGroupLabel>
           <SidebarGroupContent>
@@ -79,7 +111,7 @@ const AppSidebar = () => {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="px-1">
-        {session?.user ? (
+        {session ? (
           <UserDropDownMenu
             handleSignOutClick={handleSignOutClick}
             session={session}

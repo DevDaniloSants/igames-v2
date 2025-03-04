@@ -30,7 +30,6 @@ async function seedDatabase() {
       data: {
         name: "Usuário teste",
         email: "ficticio@example.com",
-        password: "senhaFicticia123",
       },
     });
 
