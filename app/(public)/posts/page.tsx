@@ -1,8 +1,8 @@
+import PostList from "@/app/_components/post-list";
+import { Button } from "@/app/_components/ui/button";
+import { Input } from "@/app/_components/ui/input";
+import { getSearchPosts } from "@/app/_data-access/post/get-search-posts";
 import Image from "next/image";
-import PostList from "../_components/post-list";
-import { Button } from "../_components/ui/button";
-import { Input } from "../_components/ui/input";
-import { getSearchPosts } from "../_data-access/post/get-search-posts";
 
 const PostsPage = async ({
   searchParams,
