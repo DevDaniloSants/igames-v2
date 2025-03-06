@@ -1,26 +1,29 @@
-import NextAuth from "next-auth";
+import NextAuth, { Session } from "next-auth";
 import authConfig from "./auth.config";
 import { NextResponse } from "next/server";
 
 export const { auth } = NextAuth(authConfig);
 
-const privateRoutes = [
-  { path: "/admin", whenAuthenticated: "next", role: "ADMIN" },
-  { path: "/user", whenAuthenticated: "next", role: "USER" },
-] as const;
+const isProtectedRoute = (auth: Session | null, path: string) => {
+  if (path.startsWith("/admin") && auth?.user.role !== "ADMIN") {
+    return { shouldRedirect: true, path: "/" };
+  }
+
+  if (path.startsWith("/user") && !auth) {
+    return { shouldRedirect: true, path: "/" };
+  }
+
+  return { shouldRedirect: false, path: "/" };
+};
 
 export default auth((req) => {
   const path = req.nextUrl.pathname;
-
   const isAuth = req.auth;
-  const isPrivateRoute = privateRoutes.find((route) => route.path === path);
 
-  if (isPrivateRoute?.path === "/admin" && isAuth?.user.role !== "ADMIN") {
-    return NextResponse.redirect(new URL("/", req.url));
-  }
+  const { shouldRedirect, path: redirectPath } = isProtectedRoute(isAuth, path);
 
-  if (isPrivateRoute?.path === "/user" && !isAuth) {
-    return NextResponse.redirect(new URL("/", req.url));
+  if (shouldRedirect) {
+    return NextResponse.redirect(new URL(redirectPath, req.url));
   }
 
   return NextResponse.next();
