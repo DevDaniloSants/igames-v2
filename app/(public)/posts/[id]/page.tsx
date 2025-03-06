@@ -1,9 +1,10 @@
+import CategoryBadge from "@/app/_components/category-badge";
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from "@/app/_components/ui/avatar";
-import { Badge } from "@/app/_components/ui/badge";
+
 import getPost from "@/app/_data-access/post/get-post";
 import getPostComments from "@/app/_data-access/post/get-post-comments";
 import { format } from "date-fns";
@@ -27,7 +28,7 @@ const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
         <span className="text-sm font-medium text-muted-foreground">
           {format(post.createdAt, "dd.mm.yyyy", { locale: ptBR })}
         </span>
-        <Badge className="rounded-sm px-1 py-0">{post.category.name}</Badge>
+        <CategoryBadge name={post.category.name} />
       </div>
       <h1 className="mb-2 text-xl font-semibold text-secondary-foreground lg:text-4xl">
         {post.title}
