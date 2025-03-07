@@ -5,13 +5,13 @@ import {
   BsTwitterX,
   BsYoutube,
 } from "react-icons/bs";
-import PostList from "../../_components/post-list";
+import PostList from "../_components/post-list";
 import { Button } from "../../_components/ui/button";
 import { getCategories } from "../../_data-access/category/get-categories";
 import { getLatestNews } from "../../_data-access/post/get-latest-news";
 import { GetPostsSkipLatest } from "../../_data-access/post/get-posts-skip-latest";
-import CategoryList from "./_components/category-list";
-import LatestNews from "./_components/LatestNews";
+import CategoryList from "../_components/category-list";
+import LatestNews from "../_components/LatestNews";
 import Link from "next/link";
 
 const Home = async () => {

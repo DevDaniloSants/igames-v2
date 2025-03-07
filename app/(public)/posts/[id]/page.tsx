@@ -1,4 +1,4 @@
-import CategoryBadge from "@/app/_components/category-badge";
+import CategoryBadge from "@/app/(public)/_components/category-badge";
 import {
   Avatar,
   AvatarFallback,

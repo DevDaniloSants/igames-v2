@@ -1,4 +1,4 @@
-import { Badge } from "./ui/badge";
+import { Badge } from "../../_components/ui/badge";
 
 const CategoryBadge = ({ name }: { name: string }) => {
   return (

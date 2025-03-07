@@ -1,4 +1,4 @@
-import PostList from "@/app/_components/post-list";
+import PostList from "@/app/(public)/_components/post-list";
 import { Button } from "@/app/_components/ui/button";
 import { Input } from "@/app/_components/ui/input";
 import { getSearchPosts } from "@/app/_data-access/post/get-search-posts";
