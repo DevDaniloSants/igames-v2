@@ -1,5 +1,5 @@
-import { cn } from "../_lib/utils";
-import { Button } from "./ui/button";
+import { Button } from "@/app/_components/ui/button";
+import { cn } from "@/app/_lib/utils";
 
 export const AdminHeaderButton = ({
   icon,

@@ -7,7 +7,7 @@ export const SIDEBAR_ADMIN_ITEMS = [
   {
     id: 6,
     title: "Notícias",
-    href: "/",
+    href: "/admin/posts",
     icon: NewspaperIcon,
   },
   {
