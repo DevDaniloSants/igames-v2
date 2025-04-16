@@ -1,23 +1,14 @@
 import { columns } from "./_columns/columns";
 
-import { PlusIcon } from "lucide-react";
 import getPosts from "@/app/_data-access/post/get-posts";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/app/_components/ui/dialog";
-import {
   AdminHeader,
-  AdminHeaderButton,
   AdminHeaderDescription,
   AdminHeaderInfo,
   AdminHeaderTitle,
 } from "../../_components/admin-header";
 import { DataTable } from "../../_components/data-table";
+import CreatePostDialog from "../../_components/create-post-dialog";
 
 const PostsPage = async () => {
   const posts = await getPosts();
@@ -29,23 +20,7 @@ const PostsPage = async () => {
           <AdminHeaderTitle name="Notícias" />
           <AdminHeaderDescription name="Gerencie as notícias do seu blog" />
         </AdminHeaderInfo>
-        <Dialog>
-          <DialogTrigger asChild>
-            <AdminHeaderButton
-              name="Nova notícia"
-              icon={<PlusIcon size={16} />}
-            />
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Are you absolutely sure?</DialogTitle>
-              <DialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
+        <CreatePostDialog />
       </AdminHeader>
       <DataTable columns={columns} data={posts} />
     </div>

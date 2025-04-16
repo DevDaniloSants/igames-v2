@@ -1,30 +1,4 @@
-import { Button } from "@/app/_components/ui/button";
 import { cn } from "@/app/_lib/utils";
-
-export const AdminHeaderButton = ({
-  icon,
-  name,
-  onClick,
-  className,
-}: {
-  icon?: React.ReactNode;
-  name: string;
-  onClick?: () => void;
-  className?: string;
-}) => {
-  return (
-    <Button
-      onClick={onClick}
-      className={cn(
-        "flex items-center gap-2 rounded bg-secondary-foreground/70 px-4 py-2 text-sm font-bold text-white hover:bg-secondary-foreground/50",
-        className,
-      )}
-    >
-      {icon}
-      {name}
-    </Button>
-  );
-};
 
 export const AdminHeaderTitle = ({
   name,
