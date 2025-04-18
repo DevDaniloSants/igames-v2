@@ -1,29 +1,25 @@
-import {
-  BsDiscord,
-  BsFacebook,
-  BsInstagram,
-  BsTwitterX,
-  BsYoutube,
-} from "react-icons/bs";
 import PostList from "../_components/post-list";
-import { Button } from "../../_components/ui/button";
 import { getCategories } from "../../_data-access/category/get-categories";
-import { getLatestNews } from "../../_data-access/post/get-latest-news";
+
 import { GetPostsSkipLatest } from "../../_data-access/post/get-posts-skip-latest";
 import CategoryList from "../_components/category-list";
-import LatestNews from "../_components/LatestNews";
-import Link from "next/link";
+
+import { Suspense } from "react";
+import LatestNewsWrapper from "../_components/latest-news-wrapper";
+import LatestNewsTitles from "../_components/latest-news-titles";
+import SocialMediaLinks from "../_components/social-media-links";
+import { LatestNewsCarouselSkeleton } from "../_components/skeletons";
 
 const Home = async () => {
-  const latestNewsPosts = await getLatestNews();
-
   const categories = await getCategories();
 
   const postsSkipLatest = await GetPostsSkipLatest();
 
   return (
     <div className="w-full space-y-6 xl:w-[1200px]">
-      <LatestNews posts={latestNewsPosts} />
+      <Suspense fallback={<LatestNewsCarouselSkeleton />}>
+        <LatestNewsWrapper />
+      </Suspense>
 
       <CategoryList categories={categories} />
 
@@ -44,28 +40,7 @@ const Home = async () => {
               Redes Sociais
             </h3>
             <hr />
-            <div className="flex flex-wrap gap-2">
-              <Button className="dark:shadow-lgdark:focus:ring-pink-800 rounded-lg bg-gradient-to-r from-pink-500 via-pink-600 to-pink-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-br focus:outline-none focus:ring-4 focus:ring-pink-300">
-                <BsInstagram />
-                Instagram
-              </Button>
-              <Button className="rounded-lg bg-gradient-to-r from-red-500 via-red-600 to-red-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-br focus:outline-none focus:ring-4 focus:ring-red-300">
-                <BsYoutube />
-                YouTube
-              </Button>
-              <Button className="rounded-lg bg-gradient-to-r from-indigo-900 via-indigo-600 to-indigo-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-br focus:outline-none focus:ring-4 focus:ring-indigo-300 dark:focus:ring-indigo-800">
-                <BsDiscord />
-                Discord
-              </Button>
-              <Button className="rounded-lg bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-br focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800">
-                <BsFacebook />
-                Facebook
-              </Button>
-              <Button className="rounded-lg bg-gradient-to-r from-zinc-900 via-zinc-700 to-zinc-800 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-br focus:outline-none focus:ring-4 focus:ring-zinc-300 dark:focus:ring-zinc-800">
-                <BsTwitterX />
-                Twitter
-              </Button>
-            </div>
+            <SocialMediaLinks />
           </div>
           <div className="space-y-2">
             <h3 className="text-2xl font-bold lg:text-lg lg:font-semibold">
@@ -73,21 +48,9 @@ const Home = async () => {
             </h3>
             <hr />
             <div className="flex w-full flex-col gap-2">
-              {latestNewsPosts.map((post) => (
-                <Link href={`/posts/${post.id}`} key={post.id}>
-                  <div
-                    key={post.id}
-                    className="group cursor-pointer rounded-md"
-                  >
-                    <h4 className="w-10/12 truncate text-xl font-bold text-secondary-foreground transition-all duration-300 group-hover:text-primary lg:text-sm">
-                      {post.title}
-                    </h4>
-                    <p className="w-11/12 truncate text-sm text-muted-foreground lg:text-xs">
-                      {post.content}
-                    </p>
-                  </div>
-                </Link>
-              ))}
+              <Suspense fallback={<div>Loading...</div>}>
+                <LatestNewsTitles />
+              </Suspense>
             </div>
           </div>
         </div>

@@ -16,7 +16,7 @@ interface LatestNewsProps {
   posts: Post[];
 }
 
-const LatestNews = ({ posts }: LatestNewsProps) => {
+const LatestNewsCarousel = ({ posts }: LatestNewsProps) => {
   const isMobile = useIsMobile();
 
   const plugin = useRef(
@@ -114,4 +114,4 @@ const LatestNews = ({ posts }: LatestNewsProps) => {
   );
 };
 
-export default LatestNews;
+export default LatestNewsCarousel;
