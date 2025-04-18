@@ -1,8 +1,9 @@
 "use client";
 
+import { Button } from "@/app/_components/ui/button";
 import { GetPost } from "@/app/_data-access/post/get-post";
 import { ColumnDef } from "@tanstack/react-table";
-import { EllipsisIcon } from "lucide-react";
+import { EllipsisIcon, ArrowUpDown } from "lucide-react";
 import Image from "next/image";
 
 export const columns: ColumnDef<GetPost>[] = [
@@ -30,8 +31,18 @@ export const columns: ColumnDef<GetPost>[] = [
     ),
   },
   {
-    accessorKey: "date",
-    header: "Data",
+    accessorKey: "createdAt",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Data
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => row.original.createdAt.toLocaleDateString(),
   },
   {

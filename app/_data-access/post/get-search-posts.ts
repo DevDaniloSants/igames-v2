@@ -37,6 +37,9 @@ export const getSearchPosts = async (query: {
     include: {
       category: true,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 
   return posts;

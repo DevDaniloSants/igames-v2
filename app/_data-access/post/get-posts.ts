@@ -16,6 +16,9 @@ const getPosts = async (): Promise<GetPosts[]> => {
       category: true,
       author: true,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 
   if (!post) {
