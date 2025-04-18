@@ -1,13 +1,16 @@
-import { GetPostsSkipLatest } from "@/app/_data-access/post/get-posts-skip-latest";
 import PostList from "./post-list";
+import { Post } from "@prisma/client";
 
-const PostListWrapper = async () => {
-  const postsSkipLatest = await GetPostsSkipLatest();
+type PostFetcher = () => Promise<Post[]>;
+
+interface PostListWrapperProps {
+  fetchPosts: PostFetcher;
+}
+
+const PostListWrapper = async ({ fetchPosts }: PostListWrapperProps) => {
+  const posts = await fetchPosts();
   return (
-    <PostList
-      posts={postsSkipLatest}
-      className="flex h-full w-full flex-col gap-4"
-    />
+    <PostList posts={posts} className="flex h-full w-full flex-col gap-4" />
   );
 };
 

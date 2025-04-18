@@ -12,6 +12,7 @@ import {
   PostListSkeleton,
 } from "../_components/skeletons";
 import PostListWrapper from "../_components/post-list-wrapper";
+import { GetPostsSkipLatest } from "@/app/_data-access/post/get-posts-skip-latest";
 
 const Home = async () => {
   const categories = await getCategories();
@@ -31,7 +32,7 @@ const Home = async () => {
           </h2>
 
           <Suspense fallback={<PostListSkeleton />}>
-            <PostListWrapper />
+            <PostListWrapper fetchPosts={GetPostsSkipLatest} />
           </Suspense>
         </div>
         <div className="w-full space-y-6">

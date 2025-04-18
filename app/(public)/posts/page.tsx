@@ -1,8 +1,10 @@
-import PostList from "@/app/(public)/_components/post-list";
 import { Button } from "@/app/_components/ui/button";
 import { Input } from "@/app/_components/ui/input";
 import { getSearchPosts } from "@/app/_data-access/post/get-search-posts";
 import Image from "next/image";
+import { Suspense } from "react";
+import PostListWrapper from "../_components/post-list-wrapper";
+import { PostListSkeleton } from "../_components/skeletons";
 
 const PostsPage = async ({
   searchParams,
@@ -10,12 +12,6 @@ const PostsPage = async ({
   searchParams: Promise<{ category?: string; search?: string }>;
 }) => {
   const query = await searchParams;
-
-  const posts = await getSearchPosts(query);
-
-  if (posts.length === 0 || !posts) {
-    return <div>No posts found</div>;
-  }
 
   return (
     <div className="h-full w-full overflow-hidden xl:max-w-[1200px]">
@@ -27,13 +23,6 @@ const PostsPage = async ({
           alt="Search Banner Image object-cover "
         />
         <div className="absolute bottom-4 left-4 z-10 flex items-center gap-4">
-          <Image
-            src={`${posts[0].category.imageUrl}`}
-            alt="Category Image"
-            width={32}
-            height={32}
-            priority
-          />
           <h1 className="text-3xl font-bold">
             {query.category || query.search}
           </h1>
@@ -48,7 +37,9 @@ const PostsPage = async ({
         </div>
       </div>
       <h2 className="mb-6 text-xl text-muted-foreground">Notícias</h2>
-      <PostList posts={posts} className="flex h-full w-full flex-col gap-4" />
+      <Suspense fallback={<PostListSkeleton />}>
+        <PostListWrapper fetchPosts={() => getSearchPosts(query)} />
+      </Suspense>
     </div>
   );
 };

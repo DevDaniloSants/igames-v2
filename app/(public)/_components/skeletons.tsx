@@ -41,7 +41,7 @@ export const LatestNewsTitlesSkeleton = () => {
 
 export const PostListSkeleton = () => {
   return (
-    <>
+    <div className="flex w-full flex-col gap-4">
       {Array.from({ length: 4 }).map((_, index) => (
         <div key={index} className="flex w-full flex-col gap-2">
           <div className="group flex cursor-pointer flex-col gap-2 md:flex-row">
@@ -64,6 +64,6 @@ export const PostListSkeleton = () => {
           </div>
         </div>
       ))}
-    </>
+    </div>
   );
 };
