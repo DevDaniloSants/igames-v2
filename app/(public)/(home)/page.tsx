@@ -1,19 +1,20 @@
-import PostList from "../_components/post-list";
 import { getCategories } from "../../_data-access/category/get-categories";
 
-import { GetPostsSkipLatest } from "../../_data-access/post/get-posts-skip-latest";
 import CategoryList from "../_components/category-list";
 
 import { Suspense } from "react";
 import LatestNewsWrapper from "../_components/latest-news-wrapper";
 import LatestNewsTitles from "../_components/latest-news-titles";
 import SocialMediaLinks from "../_components/social-media-links";
-import { LatestNewsCarouselSkeleton } from "../_components/skeletons";
+import {
+  LatestNewsCarouselSkeleton,
+  LatestNewsTitlesSkeleton,
+  PostListSkeleton,
+} from "../_components/skeletons";
+import PostListWrapper from "../_components/post-list-wrapper";
 
 const Home = async () => {
   const categories = await getCategories();
-
-  const postsSkipLatest = await GetPostsSkipLatest();
 
   return (
     <div className="w-full space-y-6 xl:w-[1200px]">
@@ -29,10 +30,9 @@ const Home = async () => {
             Notícias
           </h2>
 
-          <PostList
-            posts={postsSkipLatest}
-            className="flex h-full w-full flex-col gap-4"
-          />
+          <Suspense fallback={<PostListSkeleton />}>
+            <PostListWrapper />
+          </Suspense>
         </div>
         <div className="w-full space-y-6">
           <div className="space-y-2">
@@ -48,7 +48,7 @@ const Home = async () => {
             </h3>
             <hr />
             <div className="flex w-full flex-col gap-2">
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<LatestNewsTitlesSkeleton />}>
                 <LatestNewsTitles />
               </Suspense>
             </div>
