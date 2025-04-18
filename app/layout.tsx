@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Mulish } from "next/font/google";
 import "./globals.css";
 import { SidebarProvider } from "./_components/ui/sidebar";
-
+import { ToastContainer } from "react-toastify";
 import Header from "./_components/header";
 import SessionProvider from "./_providers/session";
 
@@ -32,6 +32,7 @@ export default function RootLayout({
             </main>
           </SidebarProvider>
         </SessionProvider>
+        <ToastContainer theme="dark" />
       </body>
     </html>
   );
