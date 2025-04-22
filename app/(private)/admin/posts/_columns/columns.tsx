@@ -1,15 +1,27 @@
 "use client";
 
 import { Button } from "@/app/_components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/app/_components/ui/dropdown-menu";
 import { GetPost } from "@/app/_data-access/post/get-post";
 import { ColumnDef } from "@tanstack/react-table";
 import { EllipsisIcon, ArrowUpDown } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export const columns: ColumnDef<GetPost>[] = [
   {
     accessorKey: "title",
     header: "Título",
+    cell: ({ row }) => (
+      <Link href={`/posts/${row.original.id}`} className="cursor-pointer">
+        {row.original.title}
+      </Link>
+    ),
   },
   {
     accessorKey: "author",
@@ -49,9 +61,15 @@ export const columns: ColumnDef<GetPost>[] = [
     accessorKey: "actions",
     header: "Ações",
     cell: () => (
-      <div className="px-3">
-        <EllipsisIcon size={16} />
-      </div>
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <EllipsisIcon size={16} />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem>Editar</DropdownMenuItem>
+          <DropdownMenuItem>Excluir</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     ),
   },
 ];
