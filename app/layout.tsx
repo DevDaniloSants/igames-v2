@@ -6,6 +6,7 @@ import { SidebarProvider } from "./_components/ui/sidebar";
 import { ToastContainer } from "react-toastify";
 import Header from "./_components/header";
 import SessionProvider from "./_providers/session";
+import { CategoryProvider } from "./_contexts/categories-context";
 
 const mulish = Mulish({
   subsets: ["latin-ext"],
@@ -26,10 +27,12 @@ export default function RootLayout({
       <body className={`${mulish.className} dark antialiased`}>
         <SessionProvider>
           <SidebarProvider>
-            <Header />
-            <main className="flex h-full w-dvw justify-center p-2 md:p-5">
-              {children}
-            </main>
+            <CategoryProvider>
+              <Header />
+              <main className="flex h-full w-dvw justify-center p-2 md:p-5">
+                {children}
+              </main>
+            </CategoryProvider>
           </SidebarProvider>
         </SessionProvider>
         <ToastContainer theme="dark" />
