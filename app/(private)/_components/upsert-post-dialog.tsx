@@ -1,6 +1,11 @@
 "use client";
 
-import { DialogContent, DialogTitle } from "@/app/_components/ui/dialog";
+import {
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogTitle,
+} from "@/app/_components/ui/dialog";
 import { Loader2Icon, UploadCloud } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -48,15 +53,29 @@ export type FormSchema = z.infer<typeof formSchema>;
 interface UpsertPostDialogProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  defaultValues?: {
+    title: string;
+    content: string;
+    category: string;
+  };
+  postId?: string;
+  imageUrl?: string;
 }
 
-const UpsertPostDialog = ({ isOpen, setIsOpen }: UpsertPostDialogProps) => {
-  const [previewImage, setPreviewImage] = useState<string>("");
+const UpsertPostDialog = ({
+  isOpen,
+  setIsOpen,
+  defaultValues,
+  postId,
+  imageUrl,
+}: UpsertPostDialogProps) => {
+  const [previewImage, setPreviewImage] = useState<string>(imageUrl ?? "");
+  const [isLoadingImage, setIsLoadingImage] = useState(true);
   const { categories } = useCategories();
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
+    defaultValues: defaultValues ?? {
       title: "",
       content: "",
       category: "",
@@ -64,7 +83,7 @@ const UpsertPostDialog = ({ isOpen, setIsOpen }: UpsertPostDialogProps) => {
     },
   });
 
-  const { isSubmitting } = form.formState;
+  console.log(postId);
 
   const handleFile = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -102,16 +121,21 @@ const UpsertPostDialog = ({ isOpen, setIsOpen }: UpsertPostDialogProps) => {
     toast.success("Notícia criada com sucesso!");
   }
 
+  const isEditing = !!defaultValues;
+
   useEffect(() => {
-    if (!open) {
+    if (!isOpen) {
       form.reset();
       setPreviewImage("");
+      console.log("fechou");
     }
-  }, [isOpen, form]);
+  }, [isOpen, form, isEditing]);
 
   return (
     <DialogContent aria-describedby="" className="max-w-[720px] lg:w-[720px]">
-      <DialogTitle />
+      <DialogTitle>
+        {isEditing ? "Editar notícia" : "Criar notícia"}
+      </DialogTitle>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -135,11 +159,13 @@ const UpsertPostDialog = ({ isOpen, setIsOpen }: UpsertPostDialogProps) => {
             name="image"
             render={({ field: { ref } }) => (
               <FormItem>
-                <div className="relative min-h-[200px] cursor-pointer rounded-md bg-stone-900 md:h-[300px] lg:h-[350px]">
+                <div className="relative min-h-[200px] cursor-pointer overflow-hidden rounded-md bg-stone-900 md:h-[300px] lg:h-[350px]">
                   <FormControl>
                     <label className="flex min-h-[200px] w-full flex-col items-center justify-center gap-4 md:h-[300px] lg:h-[350px]">
                       <span className="z-50 scale-100 opacity-30 transition-all duration-300 hover:scale-110 hover:opacity-100">
-                        <UploadCloud size={40} className="cursor-pointer" />
+                        {!isLoadingImage && (
+                          <UploadCloud size={40} className="cursor-pointer" />
+                        )}
                       </span>
                       <Input
                         type="file"
@@ -150,15 +176,24 @@ const UpsertPostDialog = ({ isOpen, setIsOpen }: UpsertPostDialogProps) => {
                     </label>
                   </FormControl>
                   <FormMessage />
+
                   {previewImage && (
                     <Image
                       src={previewImage}
                       alt="Preview da imagem"
                       priority
                       fill
+                      sizes="100%"
+                      onLoad={() => setIsLoadingImage(false)}
                       quality={100}
                       className="object-cover"
                     />
+                  )}
+
+                  {isEditing && isLoadingImage && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-zinc-900">
+                      <Loader2Icon className="h-10 w-10 animate-spin text-zinc-500" />
+                    </div>
                   )}
                 </div>
               </FormItem>
@@ -200,6 +235,7 @@ const UpsertPostDialog = ({ isOpen, setIsOpen }: UpsertPostDialogProps) => {
                 <FormControl>
                   <Textarea
                     placeholder="Digite o conteúdo da notícia"
+                    className="h-60"
                     {...field}
                   />
                 </FormControl>
@@ -207,16 +243,17 @@ const UpsertPostDialog = ({ isOpen, setIsOpen }: UpsertPostDialogProps) => {
               </FormItem>
             )}
           />
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? (
-              <>
+          <DialogFooter className="gap-2">
+            <DialogClose asChild>
+              <Button variant={"ghost"}>Cancelar</Button>
+            </DialogClose>
+            <Button disabled={form.formState.isSubmitting}>
+              {form.formState.isSubmitting && (
                 <Loader2Icon className="animate-spin" />
-                Enviando...
-              </>
-            ) : (
-              "Enviar"
-            )}
-          </Button>
+              )}
+              {isEditing ? "Salvar" : "Criar"} notícia
+            </Button>
+          </DialogFooter>
         </form>
       </Form>
     </DialogContent>
