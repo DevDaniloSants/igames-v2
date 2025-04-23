@@ -8,12 +8,10 @@ import {
   AdminHeaderTitle,
 } from "../../_components/admin-header";
 import { DataTable } from "../../_components/data-table";
-import CreatePostDialog from "../../_components/create-post-dialog";
-import { getCategories } from "@/app/_data-access/category/get-categories";
+import AddPostButton from "../../_components/add-post-button";
 
 const PostsPage = async () => {
   const posts = await getPosts();
-  const categories = await getCategories();
 
   return (
     <div className="w-full overflow-hidden xl:max-w-[1200px]">
@@ -22,7 +20,7 @@ const PostsPage = async () => {
           <AdminHeaderTitle name="Notícias" />
           <AdminHeaderDescription name="Gerencie as notícias do seu blog" />
         </AdminHeaderInfo>
-        <CreatePostDialog categories={categories} />
+        <AddPostButton />
       </AdminHeader>
       <DataTable columns={columns} data={posts} />
     </div>
