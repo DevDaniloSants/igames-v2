@@ -60,14 +60,10 @@ export const columns: ColumnDef<GetPost>[] = [
         title: row.original.title,
         content: row.original.content,
         category: row.original.category.id,
+        imageUrl: row.original.imageUrl,
+        id: row.original.id,
       };
-      return (
-        <TableDropdownMenu
-          imageUrl={row.original.imageUrl}
-          postId={row.original.id}
-          post={post}
-        />
-      );
+      return <TableDropdownMenu post={post} />;
     },
   },
 ];

@@ -16,19 +16,15 @@ import UpsertPostDialog from "./upsert-post-dialog";
 
 interface TableDropdownMenuProps {
   post: {
+    id: string;
     title: string;
     content: string;
     category: string;
+    imageUrl: string;
   };
-  imageUrl: string;
-  postId: string;
 }
 
-const TableDropdownMenu = ({
-  post,
-  imageUrl,
-  postId,
-}: TableDropdownMenuProps) => {
+const TableDropdownMenu = ({ post }: TableDropdownMenuProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
@@ -66,8 +62,6 @@ const TableDropdownMenu = ({
             isOpen={isEditDialogOpen}
             setIsOpen={setIsEditDialogOpen}
             defaultValues={post}
-            imageUrl={imageUrl}
-            postId={postId}
           />
         </Dialog>
       )}

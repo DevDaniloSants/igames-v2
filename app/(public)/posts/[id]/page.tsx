@@ -43,7 +43,9 @@ const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
           className="object-cover"
         />
       </div>
-      <p className="first-letter:ml-10 first-letter:text-xl">{post.content}</p>
+      <p className="overflow-hidden first-letter:ml-10 first-letter:text-xl">
+        {post.content}
+      </p>
       <div className="mt-6 space-y-1">
         <div className="flex items-center gap-2">
           <span className="text-sm font-bold text-muted-foreground">Por:</span>

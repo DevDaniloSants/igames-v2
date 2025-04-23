@@ -32,10 +32,12 @@ import {
   SelectValue,
 } from "@/app/_components/ui/select";
 import { toast } from "react-toastify";
-import { createPost } from "@/app/_actions/post/create-post";
+
 import { useCategories } from "@/app/_contexts/categories-context";
+import { upsertPost } from "@/app/_actions/post/upsert-post";
 
 const formSchema = z.object({
+  id: z.string().uuid().optional(),
   title: z
     .string()
     .min(6, { message: "O título precisa ter no mínimo 6 caracteres" })
@@ -54,24 +56,26 @@ interface UpsertPostDialogProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   defaultValues?: {
+    id: string;
     title: string;
     content: string;
     category: string;
+    imageUrl: string;
   };
-  postId?: string;
-  imageUrl?: string;
 }
 
 const UpsertPostDialog = ({
   isOpen,
   setIsOpen,
   defaultValues,
-  postId,
-  imageUrl,
 }: UpsertPostDialogProps) => {
-  const [previewImage, setPreviewImage] = useState<string>(imageUrl ?? "");
+  const [previewImage, setPreviewImage] = useState<string>(
+    defaultValues?.imageUrl ?? "",
+  );
   const [isLoadingImage, setIsLoadingImage] = useState(true);
   const { categories } = useCategories();
+
+  const isEditing = !!defaultValues;
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -82,8 +86,6 @@ const UpsertPostDialog = ({
       image: undefined,
     },
   });
-
-  console.log(postId);
 
   const handleFile = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -114,20 +116,17 @@ const UpsertPostDialog = ({
     formData.append("category", data.category);
     formData.append("image", data.image);
 
-    await createPost(formData);
+    await upsertPost({ formData, postId: defaultValues?.id });
     setIsOpen(false);
     form.reset();
     setPreviewImage("");
-    toast.success("Notícia criada com sucesso!");
+    toast.success(`${isEditing ? "Notícia atualizada" : "Notícia criada"}`);
   }
-
-  const isEditing = !!defaultValues;
 
   useEffect(() => {
     if (!isOpen) {
       form.reset();
       setPreviewImage("");
-      console.log("fechou");
     }
   }, [isOpen, form, isEditing]);
 
@@ -163,7 +162,9 @@ const UpsertPostDialog = ({
                   <FormControl>
                     <label className="flex min-h-[200px] w-full flex-col items-center justify-center gap-4 md:h-[300px] lg:h-[350px]">
                       <span className="z-50 scale-100 opacity-30 transition-all duration-300 hover:scale-110 hover:opacity-100">
-                        {!isLoadingImage && (
+                        {isEditing && isLoadingImage ? (
+                          <Loader2Icon className="h-10 w-10 animate-spin text-zinc-500" />
+                        ) : (
                           <UploadCloud size={40} className="cursor-pointer" />
                         )}
                       </span>
@@ -188,12 +189,6 @@ const UpsertPostDialog = ({
                       quality={100}
                       className="object-cover"
                     />
-                  )}
-
-                  {isEditing && isLoadingImage && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-zinc-900">
-                      <Loader2Icon className="h-10 w-10 animate-spin text-zinc-500" />
-                    </div>
                   )}
                 </div>
               </FormItem>
