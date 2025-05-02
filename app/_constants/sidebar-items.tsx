@@ -13,7 +13,7 @@ export const SIDEBAR_ADMIN_ITEMS = [
   {
     id: 7,
     title: "Usuários",
-    href: "/",
+    href: "/admin/users",
     icon: UsersIcon,
   },
   {
