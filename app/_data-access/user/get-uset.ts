@@ -6,6 +6,10 @@ export interface IUserDTO {
   name: string;
   email: string;
   role: Role;
+  _count: {
+    posts: number;
+    comments: number;
+  };
 }
 
 export const getUsers = async (): Promise<IUserDTO[]> => {
@@ -15,6 +19,12 @@ export const getUsers = async (): Promise<IUserDTO[]> => {
       name: true,
       email: true,
       role: true,
+      _count: {
+        select: {
+          posts: true,
+          comments: true,
+        },
+      },
     },
   });
 
