@@ -1,26 +1,20 @@
 "use client";
 
+import TableSelectCustom from "@/app/(private)/_components/table-select-custom";
 import { Button } from "@/app/_components/ui/button";
+
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/app/_components/ui/tooltip";
-import { IUserDTO } from "@/app/_data-access/user/get-uset";
+
+import { IUserDTO } from "@/app/_data-access/user/get-user";
 import { Role } from "@prisma/client";
 
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
-
-function formatUserRole(role: Role): string {
-  const roles = {
-    ADMIN: "Administrador",
-    USER: "Usuário",
-  };
-
-  return roles[role] || role;
-}
 
 export const columns: ColumnDef<IUserDTO>[] = [
   {
@@ -44,11 +38,14 @@ export const columns: ColumnDef<IUserDTO>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => {
+    cell: function Cell({ row }) {
       return (
-        <div className="flex w-full items-center gap-2 pl-4">
-          {formatUserRole(row.original.role)}
-        </div>
+        <TableSelectCustom
+          value={row.original.role}
+          options={Object.values(Role)}
+          type="role"
+          username={row.original.name}
+        />
       );
     },
   },
