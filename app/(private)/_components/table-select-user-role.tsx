@@ -1,5 +1,6 @@
 "use client";
 
+import updateUserRole from "@/app/_actions/user/update-user-role";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,13 +20,13 @@ import {
 } from "@/app/_components/ui/select";
 import { Role } from "@prisma/client";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
-interface TableSelectCustomProps<T extends string> {
-  value: T;
-  options: T[];
+interface TableSelectUserRoleProps {
+  id: string;
+  value: Role;
+  options: Role[];
   username?: string;
-  title?: string;
-  type: "role" | "category";
 }
 
 function formatUserRole(role: Role): string {
@@ -37,26 +38,34 @@ function formatUserRole(role: Role): string {
   return roles[role] || role;
 }
 
-const TableSelectCustom = <T extends string>({
+const TableSelectUserRole = ({
+  id,
   value,
   options,
-  type,
   username,
-  title,
-}: TableSelectCustomProps<T>) => {
-  const [selectValue, setSelectValue] = useState<T>(value);
-  const [pendingValue, setPendingValue] = useState<T | null>(null);
+}: TableSelectUserRoleProps) => {
+  const [selectValue, setSelectValue] = useState<Role>(value);
+  const [pendingValue, setPendingValue] = useState<Role | null>(null);
   const [isOpenAlert, setIsOpenAlert] = useState(false);
 
-  const handleSelectChange = (newValue: T) => {
+  const handleSelectChange = (newValue: Role) => {
     if (newValue === selectValue) return;
     setPendingValue(newValue);
     setIsOpenAlert(true);
   };
 
-  const handleConfirmClick = () => {
+  const handleConfirmClick = async () => {
     if (!pendingValue) return;
     setSelectValue(pendingValue);
+
+    const updatedUser = await updateUserRole({
+      userId: id,
+      role: pendingValue,
+    });
+
+    if (!updatedUser) return toast.error("Erro ao atualizar o usuário");
+    toast.success(`O usuário ${username} foi atualizado com sucesso`);
+
     setPendingValue(null);
     setIsOpenAlert(false);
   };
@@ -78,7 +87,7 @@ const TableSelectCustom = <T extends string>({
         <SelectContent>
           {options.map((option) => (
             <SelectItem key={option} value={option}>
-              {type === "role" ? formatUserRole(option as Role) : option}
+              {formatUserRole(option as Role)}
             </SelectItem>
           ))}
         </SelectContent>
@@ -87,15 +96,11 @@ const TableSelectCustom = <T extends string>({
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            {type === "role"
-              ? `Tem certeza que deseja alterar o nível de acesso de \"${username}\"?`
-              : `Tem certeza que deseja alterar a categoria de ${title}?`}
+            {`Tem certeza que deseja alterar o nível de acesso de \"${username}\"?`}
           </AlertDialogTitle>
           <AlertDialogDescription>
             Esta ação não pode ser desfeita. Isso modificará
-            {type === "role"
-              ? ` o nível de acesso do usuário para ${pendingValue}.`
-              : ` a categoria da notícia para ${pendingValue}.`}
+            {` o nível de acesso do usuário para ${pendingValue}.`}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -111,4 +116,4 @@ const TableSelectCustom = <T extends string>({
   );
 };
 
-export default TableSelectCustom;
+export default TableSelectUserRole;
