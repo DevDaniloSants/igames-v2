@@ -7,8 +7,8 @@ import {
   AdminHeaderTitle,
 } from "../../_components/admin-header";
 import { DataTable } from "../../_components/data-table";
-import AddPostButton from "../../_components/add-post-button";
-import { getUsers } from "@/app/_data-access/user/get-uset";
+
+import { getUsers } from "@/app/_data-access/user/get-user";
 
 const PostsPage = async () => {
   const users = await getUsers();
@@ -17,10 +17,9 @@ const PostsPage = async () => {
     <div className="w-full overflow-hidden xl:max-w-[1200px]">
       <AdminHeader>
         <AdminHeaderInfo>
-          <AdminHeaderTitle name="Notícias" />
-          <AdminHeaderDescription name="Gerencie as notícias do seu blog" />
+          <AdminHeaderTitle name="Usuários" />
+          <AdminHeaderDescription name="Gerencie os usuários do sistema." />
         </AdminHeaderInfo>
-        <AddPostButton />
       </AdminHeader>
       <DataTable columns={columns} data={users} />
     </div>

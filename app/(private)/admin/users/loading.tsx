@@ -1,4 +1,3 @@
-import AddPostButton from "../../_components/add-post-button";
 import {
   AdminHeader,
   AdminHeaderDescription,
@@ -17,7 +16,6 @@ const Loading = () => {
           <AdminHeaderTitle name="Notícias" />
           <AdminHeaderDescription name="Gerencie as notícias do seu blog" />
         </AdminHeaderInfo>
-        <AddPostButton />
       </AdminHeader>
 
       <DataTable columns={columns} data={[]} isLoading={true} />
