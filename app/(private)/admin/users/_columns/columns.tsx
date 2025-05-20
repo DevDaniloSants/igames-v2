@@ -1,6 +1,6 @@
 "use client";
 
-import TableSelectCustom from "@/app/(private)/_components/table-select-custom";
+import TableSelectUserRole from "@/app/(private)/_components/table-select-user-role";
 import { Button } from "@/app/_components/ui/button";
 
 import {
@@ -39,11 +39,13 @@ export const columns: ColumnDef<IUserDTO>[] = [
       );
     },
     cell: function Cell({ row }) {
+      const roles = Object.values(Role);
+
       return (
-        <TableSelectCustom
+        <TableSelectUserRole
+          id={row.original.id}
           value={row.original.role}
-          options={Object.values(Role)}
-          type="role"
+          options={roles}
           username={row.original.name}
         />
       );
