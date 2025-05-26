@@ -2,6 +2,7 @@
 
 import { db } from "@/app/_lib/prisma";
 import { auth } from "@/auth";
+
 import { Role } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
@@ -14,9 +15,9 @@ const updateUserRole = async ({
 }) => {
   const session = await auth();
 
-  if (!session) return;
-
-  if (session.user.role !== Role.ADMIN || !session) return;
+  if (session?.user.role !== Role.ADMIN || session.user.id === userId) {
+    throw new Error("Unauthorized");
+  }
 
   const updatedUser = await db.user.update({
     where: {

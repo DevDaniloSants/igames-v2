@@ -56,18 +56,28 @@ const TableSelectUserRole = ({
 
   const handleConfirmClick = async () => {
     if (!pendingValue) return;
-    setSelectValue(pendingValue);
 
-    const updatedUser = await updateUserRole({
-      userId: id,
-      role: pendingValue,
-    });
+    try {
+      const updatedUser = await updateUserRole({
+        userId: id,
+        role: pendingValue,
+      });
 
-    if (!updatedUser) return toast.error("Erro ao atualizar o usuário");
-    toast.success(`O usuário ${username} foi atualizado com sucesso`);
+      toast.success(`O usuário ${updatedUser.name} foi atualizado com sucesso`);
 
-    setPendingValue(null);
-    setIsOpenAlert(false);
+      setSelectValue(pendingValue);
+      setPendingValue(null);
+      setIsOpenAlert(false);
+    } catch (error) {
+      console.error(error);
+      if (error instanceof Error) {
+        if (error.message === "Unauthorized") {
+          toast.error("Você não pode alterar a própria role.");
+        } else {
+          toast.error("Ocorreu um erro ao atualizar o usuário");
+        }
+      }
+    }
   };
 
   const handleCancelClick = () => {
