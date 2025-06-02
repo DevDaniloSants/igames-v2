@@ -1,10 +1,9 @@
-import { Button } from "@/app/_components/ui/button";
-import { Input } from "@/app/_components/ui/input";
 import { getSearchPosts } from "@/app/_data-access/post/get-search-posts";
 import Image from "next/image";
 import { Suspense } from "react";
 import PostListWrapper from "../_components/post-list-wrapper";
 import { PostListSkeleton } from "../_components/skeletons";
+import SearchForm from "../_components/search-form";
 
 const PostsPage = async ({
   searchParams,
@@ -31,10 +30,7 @@ const PostsPage = async ({
       </div>
       <div className="mb-6 space-y-4">
         <h3 className="text-3xl font-semibold">Pesquisar</h3>
-        <div className="flex gap-2">
-          <Input placeholder="Pesquisar" className="focus-visible:ring-0" />
-          <Button>Pesquisar</Button>
-        </div>
+        <SearchForm />
       </div>
       <h2 className="mb-6 text-xl text-muted-foreground">Notícias</h2>
       <Suspense fallback={<PostListSkeleton />}>
