@@ -13,6 +13,7 @@ import {
 } from "../_components/skeletons";
 import PostListWrapper from "../_components/post-list-wrapper";
 import { GetPostsSkipLatest } from "@/app/_data-access/post/get-posts-skip-latest";
+import SearchForm from "../_components/search-form";
 
 const Home = async () => {
   const categories = await getCategories();
@@ -36,6 +37,7 @@ const Home = async () => {
           </Suspense>
         </div>
         <div className="w-full space-y-6">
+          <SearchForm />
           <div className="space-y-2">
             <h3 className="text-2xl font-bold lg:text-lg lg:font-semibold">
               Redes Sociais
