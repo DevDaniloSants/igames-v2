@@ -1,12 +1,15 @@
 "use client";
 
 import TableDropdownMenu from "@/app/(private)/_components/table-dropdown-menu";
+import UpsertPostDialog from "@/app/(private)/_components/upsert-post-dialog";
+import { deletePost } from "@/app/_actions/post/delete-post";
 import { Button } from "@/app/_components/ui/button";
 import { GetPost } from "@/app/_data-access/post/get-post";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 export const columns: ColumnDef<GetPost>[] = [
   {
@@ -63,7 +66,26 @@ export const columns: ColumnDef<GetPost>[] = [
         imageUrl: row.original.imageUrl,
         id: row.original.id,
       };
-      return <TableDropdownMenu post={post} />;
+
+      const handleDeletePost = async () => {
+        try {
+          await deletePost(post.id);
+          toast.success("Notícia deletada com sucesso!");
+        } catch (error) {
+          console.log(error);
+          toast.error("Erro ao deletar notícia!");
+        }
+      };
+
+      return (
+        <TableDropdownMenu
+          itemName="Notícia"
+          onDelete={handleDeletePost}
+          renderEditDialog={(props) => {
+            return <UpsertPostDialog {...props} defaultValues={post} />;
+          }}
+        />
+      );
     },
   },
 ];

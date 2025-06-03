@@ -53,7 +53,9 @@ const UpsertCategoryDialog = ({
   setIsOpen,
   defaultValues,
 }: UpsertCategoryDialogProps) => {
-  const [previewImage, setPreviewImage] = useState<string>();
+  const [previewImage, setPreviewImage] = useState<string>(
+    defaultValues?.imageUrl ?? "",
+  );
   const [isLoadingImage, setIsLoadingImage] = useState(true);
 
   const form = useForm<FormSchema>({

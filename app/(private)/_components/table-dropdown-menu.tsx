@@ -10,9 +10,9 @@ import {
 } from "@/app/_components/ui/dropdown-menu";
 import { EllipsisIcon, SquarePen, Trash2Icon } from "lucide-react";
 
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { Dialog } from "@/app/_components/ui/dialog";
-import UpsertPostDialog from "./upsert-post-dialog";
+
 import { AlertDialog } from "@radix-ui/react-alert-dialog";
 import {
   AlertDialogAction,
@@ -24,20 +24,21 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/app/_components/ui/alert-dialog";
-import { deletePost } from "@/app/_actions/post/delete-post";
-import { toast } from "react-toastify";
 
 interface TableDropdownMenuProps {
-  post: {
-    id: string;
-    title: string;
-    content: string;
-    category: string;
-    imageUrl: string;
-  };
+  itemName: "Categoria" | "Notícia";
+  onDelete: () => Promise<void>;
+  renderEditDialog: (props: {
+    isOpen: boolean;
+    setIsOpen: (isOpen: boolean) => void;
+  }) => ReactNode;
 }
 
-const TableDropdownMenu = ({ post }: TableDropdownMenuProps) => {
+const TableDropdownMenu = ({
+  itemName,
+  onDelete,
+  renderEditDialog,
+}: TableDropdownMenuProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -56,16 +57,6 @@ const TableDropdownMenu = ({ post }: TableDropdownMenuProps) => {
     setTimeout(() => {
       setIsDeleteDialogOpen(true);
     }, 100);
-  };
-
-  const confirmDeletePost = async () => {
-    try {
-      await deletePost(post.id);
-      toast.success("Notícia deletada com sucesso!");
-    } catch (error) {
-      console.log(error);
-      toast.error("Erro ao deletar notícia!");
-    }
   };
 
   return (
@@ -93,25 +84,24 @@ const TableDropdownMenu = ({ post }: TableDropdownMenuProps) => {
 
       {isEditDialogOpen && (
         <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-          <UpsertPostDialog
-            isOpen={isEditDialogOpen}
-            setIsOpen={setIsEditDialogOpen}
-            defaultValues={post}
-          />
+          {renderEditDialog({
+            isOpen: isEditDialogOpen,
+            setIsOpen: setIsEditDialogOpen,
+          })}
         </Dialog>
       )}
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Deseja mesmo excluir essa notícia ?
+            Deseja mesmo excluir essa {itemName} ?
           </AlertDialogTitle>
           <AlertDialogDescription>
-            {post.title}, será excluído permanentemente.
+            A {itemName}, será excluído permanentemente.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={confirmDeletePost}>
+          <AlertDialogAction onClick={() => onDelete()}>
             Continuar
           </AlertDialogAction>
         </AlertDialogFooter>
@@ -119,5 +109,4 @@ const TableDropdownMenu = ({ post }: TableDropdownMenuProps) => {
     </AlertDialog>
   );
 };
-
 export default TableDropdownMenu;
