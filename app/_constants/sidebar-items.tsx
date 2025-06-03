@@ -19,7 +19,7 @@ export const SIDEBAR_ADMIN_ITEMS = [
   {
     id: 8,
     title: "Categorias",
-    href: "/",
+    href: "/admin/categories",
     icon: ListIcon,
   },
 ];
