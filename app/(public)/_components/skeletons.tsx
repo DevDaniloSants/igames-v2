@@ -1,3 +1,8 @@
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/app/_components/ui/carousel";
 import { Skeleton } from "@/app/_components/ui/skeleton";
 
 export const LatestNewsCarouselSkeleton = () => {
@@ -65,5 +70,22 @@ export const PostListSkeleton = () => {
         </div>
       ))}
     </div>
+  );
+};
+
+export const CategoryListSkeleton = () => {
+  return (
+    <Carousel className="max-w-1200px w-full">
+      <CarouselContent>
+        {Array.from({ length: 4 }).map((_, index) => (
+          <CarouselItem
+            key={index}
+            className="cursor-grabbing md:basis-1/2 md:cursor-pointer lg:basis-1/4 lg:cursor-default"
+          >
+            <Skeleton className="h-[100px] w-full rounded-md" />
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+    </Carousel>
   );
 };

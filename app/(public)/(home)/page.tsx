@@ -1,12 +1,9 @@
-import { getCategories } from "../../_data-access/category/get-categories";
-
-import CategoryList from "../_components/category-list";
-
 import { Suspense } from "react";
 import LatestNewsWrapper from "../_components/latest-news-wrapper";
 import LatestNewsTitles from "../_components/latest-news-titles";
 import SocialMediaLinks from "../_components/social-media-links";
 import {
+  CategoryListSkeleton,
   LatestNewsCarouselSkeleton,
   LatestNewsTitlesSkeleton,
   PostListSkeleton,
@@ -14,17 +11,18 @@ import {
 import PostListWrapper from "../_components/post-list-wrapper";
 import { GetPostsSkipLatest } from "@/app/_data-access/post/get-posts-skip-latest";
 import SearchForm from "../_components/search-form";
+import CategoryListWrapper from "../_components/category-list-weapper";
 
 const Home = async () => {
-  const categories = await getCategories();
-
   return (
     <div className="w-full space-y-6 xl:w-[1200px]">
       <Suspense fallback={<LatestNewsCarouselSkeleton />}>
         <LatestNewsWrapper />
       </Suspense>
 
-      <CategoryList categories={categories} />
+      <Suspense fallback={<CategoryListSkeleton />}>
+        <CategoryListWrapper />
+      </Suspense>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <div className="space-y-4 overflow-hidden pb-5 lg:col-span-2">
