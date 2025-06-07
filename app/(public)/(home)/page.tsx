@@ -8,10 +8,9 @@ import {
   LatestNewsTitlesSkeleton,
   PostListSkeleton,
 } from "../_components/skeletons";
-import PostListWrapper from "../_components/post-list-wrapper";
-import { GetPostsSkipLatest } from "@/app/_data-access/post/get-posts-skip-latest";
 import SearchForm from "../_components/search-form";
 import CategoryListWrapper from "../_components/category-list-weapper";
+import InfiniteScrollPosts from "../_components/infinite-scroll-posts";
 
 const Home = async () => {
   return (
@@ -25,16 +24,16 @@ const Home = async () => {
       </Suspense>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-        <div className="space-y-4 overflow-hidden pb-5 lg:col-span-2">
+        <div className="order-2 space-y-4 overflow-hidden pb-5 lg:order-1 lg:col-span-2">
           <h2 className="relative text-2xl font-bold before:absolute before:left-28 before:top-4 before:h-1 before:w-full before:bg-secondary before:lg:w-4/5">
             Notícias
           </h2>
 
           <Suspense fallback={<PostListSkeleton />}>
-            <PostListWrapper fetchPosts={GetPostsSkipLatest} />
+            <InfiniteScrollPosts />
           </Suspense>
         </div>
-        <div className="w-full space-y-6">
+        <div className="order-1 col-span-1 w-full space-y-6 lg:order-2">
           <SearchForm />
           <div className="space-y-2">
             <h3 className="text-2xl font-bold lg:text-lg lg:font-semibold">

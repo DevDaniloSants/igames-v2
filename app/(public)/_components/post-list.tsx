@@ -1,8 +1,8 @@
-import { Post } from "@prisma/client";
 import PostCard from "./post-card";
+import { GetPostDTO } from "@/app/_data-access/post/get-posts-test";
 
 interface PostListProps {
-  posts: Post[];
+  posts: GetPostDTO[];
   className?: string;
 }
 

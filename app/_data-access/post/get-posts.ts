@@ -1,20 +1,27 @@
 "use server";
 
 import { db } from "@/app/_lib/prisma";
-import { Prisma } from "@prisma/client";
+import { Category, Post, User } from "@prisma/client";
 
-export type GetPosts = Prisma.PostGetPayload<{
-  include: {
-    category: true;
-    author: true;
+export interface GetPostsDTO extends Post {
+  category?: Category;
+  author?: User;
+  _count: {
+    comments: number;
   };
-}>;
+}
 
-const getPosts = async (): Promise<GetPosts[]> => {
+const getPosts = async (): Promise<GetPostsDTO[]> => {
   const post = await db.post.findMany({
     include: {
       category: true,
       author: true,
+      comments: true,
+      _count: {
+        select: {
+          comments: true,
+        },
+      },
     },
     orderBy: {
       createdAt: "desc",
