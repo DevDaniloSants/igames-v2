@@ -22,6 +22,8 @@ export async function GET(
     take: limit,
     orderBy: { createdAt: "desc" },
     include: {
+      category: true,
+      author: true,
       comments: true,
       _count: {
         select: {

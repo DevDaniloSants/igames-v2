@@ -4,8 +4,8 @@ import { db } from "@/app/_lib/prisma";
 import { Category, Post, User } from "@prisma/client";
 
 export interface GetPostsDTO extends Post {
-  category?: Category;
-  author?: User;
+  category: Category;
+  author: User;
   _count: {
     comments: number;
   };

@@ -4,6 +4,12 @@ import { Prisma } from "@prisma/client";
 export type GetSearchPosts = Prisma.PostGetPayload<{
   include: {
     category: true;
+    author: true;
+    _count: {
+      select: {
+        comments: true;
+      };
+    };
   };
 }>;
 
@@ -36,6 +42,12 @@ export const getSearchPosts = async (query: {
     },
     include: {
       category: true,
+      author: true,
+      _count: {
+        select: {
+          comments: true,
+        },
+      },
     },
     orderBy: {
       createdAt: "desc",

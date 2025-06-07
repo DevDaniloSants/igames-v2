@@ -1,8 +1,8 @@
+import { GetPostsDTO } from "@/app/_data-access/post/get-posts";
 import PostCard from "./post-card";
-import { GetPostDTO } from "@/app/_data-access/post/get-posts-test";
 
 interface PostListProps {
-  posts: GetPostDTO[];
+  posts: GetPostsDTO[];
   className?: string;
 }
 
