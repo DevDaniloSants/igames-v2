@@ -1,7 +1,7 @@
+import { GetPostsDTO } from "@/app/_data-access/post/get-posts";
 import PostList from "./post-list";
-import { Post } from "@prisma/client";
 
-type PostFetcher = () => Promise<Post[]>;
+type PostFetcher = () => Promise<GetPostsDTO[]>;
 
 interface PostListWrapperProps {
   fetchPosts: PostFetcher;
