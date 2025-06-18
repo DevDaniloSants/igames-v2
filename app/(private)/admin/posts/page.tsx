@@ -22,7 +22,7 @@ const PostsPage = async () => {
         </AdminHeaderInfo>
         <AddPostButton />
       </AdminHeader>
-      <DataTable columns={columns} data={posts} />
+      <DataTable columns={columns} data={posts!} />
     </div>
   );
 };

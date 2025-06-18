@@ -7,17 +7,22 @@ import {
 
 import getPost from "@/app/_data-access/post/get-post";
 import getPostComments from "@/app/_data-access/post/get-post-comments";
+import { auth } from "@/auth";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { Loader2Icon } from "lucide-react";
 import Image from "next/image";
 
 import { notFound } from "next/navigation";
+import CommentForm from "../../_components/comment-form";
 
 const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const postId = (await params).id;
   if (!postId) {
     return notFound();
   }
+
+  const session = await auth();
 
   const post = await getPost(postId);
   const comments = await getPostComments(postId);
@@ -57,21 +62,45 @@ const PostPage = async ({ params }: { params: Promise<{ id: string }> }) => {
           {post.author.email}
         </span>
       </div>
+      {session?.user && (
+        <div className="flex w-full gap-2 py-4">
+          <div>
+            {session.user.image ? (
+              <Avatar>
+                <AvatarImage src={session.user.image} />
+                <AvatarFallback>
+                  <Loader2Icon className="animate-spin" />
+                </AvatarFallback>
+              </Avatar>
+            ) : (
+              <Avatar>
+                <AvatarFallback>TD</AvatarFallback>
+              </Avatar>
+            )}
+          </div>
+          <CommentForm postId={postId} userId={session.user.id} />
+        </div>
+      )}
       <div className="mt-6">
-        <h2 className="mb-2 text-lg font-semibold">
+        <h2 className="mb-6 text-lg font-semibold">
           Comentários ({comments.length})
         </h2>
-        <div className="space-y-3">
+        <div className="space-y-6">
           {comments.length > 0 ? (
             <>
               {comments.map((comment) => (
-                <div key={comment.id} className="flex items-start gap-2">
+                <div
+                  key={comment.id}
+                  className="group flex items-start gap-2 rounded-sm p-4 transition-colors duration-300 hover:cursor-pointer hover:bg-muted/50"
+                >
                   <Avatar>
-                    <AvatarImage src={""} />
+                    <AvatarImage src={comment.user.image || ""} />
                     <AvatarFallback>TD</AvatarFallback>
                   </Avatar>
                   <div>
-                    <h4 className="text-xs">{comment.user.name}</h4>
+                    <h4 className="text-xs transition-colors duration-300 group-hover:text-secondary-foreground">
+                      {comment.user.name}
+                    </h4>
                     <p className="text-sm text-muted-foreground">
                       {comment.content}
                     </p>
