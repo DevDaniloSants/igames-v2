@@ -1,9 +1,9 @@
 "use client";
 
 import {
-  IPostComment,
-  postComment,
-} from "@/app/_actions/comments/post-comment";
+  IUpsertComment,
+  upsertComment,
+} from "@/app/_actions/comments/upsert-comment";
 import { Button } from "@/app/_components/ui/button";
 import {
   Form,
@@ -14,6 +14,7 @@ import {
 } from "@/app/_components/ui/form";
 import { Textarea } from "@/app/_components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2Icon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { z } from "zod";
@@ -39,13 +40,13 @@ const CommentForm = ({ postId, userId }: CommentFormProps) => {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
-      const newComment: IPostComment = {
+      const newComment: IUpsertComment = {
         content: data.content,
         postId: postId,
         userId: userId,
       };
 
-      await postComment(newComment);
+      await upsertComment(newComment);
       toast.success("Comentário adicionado com sucesso!");
       form.reset();
     } catch (error) {
@@ -77,7 +78,10 @@ const CommentForm = ({ postId, userId }: CommentFormProps) => {
           )}
         />
         <Button type="submit" className="lg:self-end">
-          Comentar
+          {form.formState.isSubmitting && (
+            <Loader2Icon className="animate-spin" />
+          )}
+          {form.formState.isSubmitting ? "Salvando" : "Comentar"}
         </Button>
       </form>
     </Form>
